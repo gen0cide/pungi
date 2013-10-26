@@ -67,9 +67,19 @@ ubuntu_rvm ()
 ubuntu_nano ()
 {
   curl -sL https://raw.github.com/gen0cide-/pungi/master/nanorc | sudo tee /etc/nanorc > /dev/null
-  ubuntu_log_info "[*] Finished installing nano config!"
+  ubuntu_log_info "Finished installing nano config!"
+}
+# -----------------------------------------------------------------------------
+ubuntu_ps1 ()
+{
+  curl -sL https://raw.github.com/gen0cide-/pungi/master/linux/ubuntu_ps1_profile.sh | sudo tee /etc/profile.d/Z1_PS1.sh > /dev/null
+  chmod +x /etc/profile.d/Z1_PS1.sh
+  source /etc/profile.d/Z1_PS1.sh
+  ubuntu_log_info "Finished setting up global PS1 variable!"
 }
 # -----------------------------------------------------------------------------
 ubuntu_packages
 ubuntu_rvm
 ubuntu_nano
+ubuntu_ps1
+# -----------------------------------------------------------------------------
