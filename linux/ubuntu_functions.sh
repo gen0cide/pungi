@@ -87,3 +87,5 @@ ubuntu_rvm
 ubuntu_nano
 ubuntu_ps1
 # -----------------------------------------------------------------------------
+ubuntu_log_info "IMPORTANT! You must source /etc/profile for this to function successfully!"
+# -----------------------------------------------------------------------------
