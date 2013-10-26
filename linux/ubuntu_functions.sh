@@ -1,3 +1,19 @@
+PUNGI_RUBY_VERSION="2.0.0-p247"
+PUNGI_DEFAULT_GEMSET="base"
+# -----------------------------------------------------------------------------
+ubuntu_log_info ()
+{
+  RED="\[\033[0;31m\]"
+  YELLOW="\[\033[0;33m\]"
+  GREEN="\[\033[0;32m\]"
+  GRAY="\[\033[1;30m\]"
+  LIGHT_GRAY="\[\033[0;37m\]"
+  CYAN="\[\033[0;36m\]"
+  LIGHT_CYAN="\[\033[1;36m\]"
+  NO_COLOUR="\[\033[0m\]"
+  echo "$RED[*] $YELLOW$1$NO_COLOUR"
+}
+# -----------------------------------------------------------------------------
 ubuntu_packages ()
 {
   sudo apt-get -y update
@@ -34,19 +50,26 @@ ubuntu_packages ()
                           libpq5             \
                           libpq-dev          \
                           lsof               
-  echo "[*] Finished installing Ubuntu packages!"
+  ubuntu_log_info "Finished installing Ubuntu packages!"
 }
-
+# -----------------------------------------------------------------------------
 ubuntu_rvm ()
 {
   curl -L https://get.rvm.io | sudo bash -s stable
-  echo "[*] Finished installing RVM!"
-  which rvm 
+  source /etc/profile.d/rvm.sh
+  sudo usermod -a -G rvm $(whoami)
+  rvm autolibs enable
+  rvm install $PUNGI_RUBY_VERSION
+  rvm use $PUNGI_RUBY_VERSION@$PUNGI_DEFAULT_GEMSET --default --create
+  ubuntu_log_info "Finished installing RVM!"
 }
-
+# -----------------------------------------------------------------------------
 ubuntu_nano ()
 {
   curl -sL https://raw.github.com/gen0cide-/pungi/master/nanorc | sudo tee /etc/nanorc > /dev/null
-  echo "[*] Finished installing nano config!"
+  ubuntu_log_info "[*] Finished installing nano config!"
 }
-
+# -----------------------------------------------------------------------------
+ubuntu_packages
+ubuntu_rvm
+ubuntu_nano
