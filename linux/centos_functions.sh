@@ -19,6 +19,7 @@ centos_packages ()
   sudo yum -y install gcc-c++ patch readline readline-devel zlib zlib-devel 
   sudo yum -y install libyaml-devel libffi-devel openssl-devel make 
   sudo yum -y install bzip2 autoconf automake libtool bison iconv-devel
+  sudo yum -y install git-core htop openssl lsof zip unzip
   centos_log_info "Finished installing centos packages!"
 }
 # -----------------------------------------------------------------------------
