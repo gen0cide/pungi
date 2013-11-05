@@ -36,6 +36,8 @@ centos_rvm ()
 # -----------------------------------------------------------------------------
 centos_nano ()
 {
+  sudo yum -y remove nano
+  sudo rpm -ivh http://www.nano-editor.org/dist/v2.2/RPMS/nano-2.2.6-1.x86_64.rpm
   curl -sL https://raw.github.com/gen0cide-/pungi/master/nanorc | sudo tee /etc/nanorc > /dev/null
   centos_log_info "Finished installing nano config!"
 }
