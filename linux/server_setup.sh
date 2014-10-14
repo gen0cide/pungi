@@ -11,6 +11,7 @@ echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 add-apt-repository -y ppa:chris-lea/redis-server
 add-apt-repository -y ppa:nginx/stable
+add-apt-repository -y ppa:chris-lea/node.js 
 apt-get update
-apt-get install -y postgresql-9.3 postgresql-contrib-9.3 uuid redis-server nginx
+apt-get install -y postgresql-9.4 postgresql-contrib-9.4 uuid redis-server nginx nodejs
 # -----------------------------------------------------------------------------
