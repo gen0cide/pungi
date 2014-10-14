@@ -7,7 +7,7 @@ fi
 sysctl vm.overcommit_memory=1
 # -----------------------------------------------------------------------------
 apt-get install -y python-software-properties libmagic-dev tree
-echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main 9.4" > /etc/apt/sources.list.d/pgdg.list
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 add-apt-repository -y ppa:chris-lea/redis-server
 add-apt-repository -y ppa:nginx/stable
