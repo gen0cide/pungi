@@ -13,5 +13,5 @@ add-apt-repository -y ppa:chris-lea/redis-server
 add-apt-repository -y ppa:nginx/stable
 add-apt-repository -y ppa:chris-lea/node.js 
 apt-get update
-apt-get install -y postgresql-9.4 postgresql-contrib-9.4 uuid redis-server nginx nodejs
+apt-get install -y postgresql-client-9.4 postgresql-9.4 postgresql-contrib-9.4 uuid redis-server nginx nodejs
 # -----------------------------------------------------------------------------
