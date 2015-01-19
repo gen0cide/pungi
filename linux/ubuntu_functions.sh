@@ -1,4 +1,4 @@
-PUNGI_RUBY_VERSION="2.1.3"
+PUNGI_RUBY_VERSION="2.2.0"
 PUNGI_DEFAULT_GEMSET="base"
 # -----------------------------------------------------------------------------
 ubuntu_log_info ()
