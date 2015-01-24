@@ -2,7 +2,7 @@
 #----------------------------------------------------------------------------------------------------------------------
 MSF_PASSWORD=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-32})
 MSF_PASSWORDTESTUSER=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-32})
-SYSTEM_RUBY_VERSION="ruby-2.1.3"
+SYSTEM_RUBY_VERSION="ruby-2.2.0"
 SYSTEM_RUBY_GEMSET="global"
 MSF_PATH="/opt/metasploit"
 #----------------------------------------------------------------------------------------------------------------------
@@ -110,12 +110,14 @@ setup_msf ()
 {
   cd $3
   bundle install
-  for MSF in $(ls msf*); do
-    echo "#!/usr/bin/env bash" > /usr/local/sbin/$MSF
-    echo "rvm in $3 do $3/$MSF" >> /usr/local/sbin/$MSF
-    chmod +x /usr/local/sbin/$MSF
-  done
+  # Metasploit Updated to 2.1.5
+  # for MSF in $(ls msf*); do
+  #   echo "#!/usr/bin/env bash" > /usr/local/sbin/$MSF
+  #   echo "rvm in $3 do $3/$MSF" >> /usr/local/sbin/$MSF
+  #   chmod +x /usr/local/sbin/$MSF
+  # done
   cp $3/config/database.yml.example $3/config/database.yml
+  
   sed -i 's/username: \metasploit_framework_development/username: msfuser/g' $3/config/database.yml
   sed -i 's/username: \metasploit_framework_test/username: msftest/g' $3/config/database.yml
   sed -i "s/__________________________________/$1/g" $3/config/database.yml
@@ -147,7 +149,8 @@ ubuntu_ps1
 source /etc/profile.d/rvm.sh
 setup_postgres $MSF_PASSWORD $MSF_PASSWORDTESTUSER
 git clone https://github.com/rapid7/metasploit-framework $MSF_PATH
-rvm install $(cat $MSF_PATH/.ruby-version)
+sed -i 's/2.1.5/2.2.0/' $MSF_PATH/.ruby-version
+# rvm install $(cat $MSF_PATH/.ruby-version)
 setup_msf $MSF_PASSWORD $MSF_PASSWORDTESTUSER $MSF_PATH
 supbrah $MSF_PATH
 #----------------------------------------------------------------------------------------------------------------------
