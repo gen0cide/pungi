@@ -43,14 +43,14 @@ install_deps ()
                      bison \
                      curl \
                      wget \
-                     postgresql \
-                     postgresql-contrib \
+                     postgresql-9.4 \
+                     postgresql-contrib-9.4 \
                      libpq-dev \
                      libapr1 \
                      libaprutil1 \
                      libsvn1 \
                      libpcap-dev \
-                     postgresql-client \
+                     postgresql-client-9.4 \
                      htop \
                      unzip \
                      lsof \
