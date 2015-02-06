@@ -69,6 +69,8 @@ install_deps ()
                      libgdbm-dev \
                      libffi-dev \
                      tree \
+                     libpq-dev \
+                     libpq5 \
                      libjemalloc1 \
                      libjemalloc-dev \
                      nmap
