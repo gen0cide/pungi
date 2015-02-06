@@ -19,10 +19,20 @@ ubuntu_log_info ()
   echo -e "$RED[*] $YELLOW$1$NO_COLOUR"
 }
 #----------------------------------------------------------------------------------------------------------------------
-install_deps () 
+install_pg ()
+{
+  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+  apt-get update
+  echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+  apt-get -y install postgresql-9.4 \
+                     postgresql-contrib-9.4 \
+                     libpq-dev \
+                     postgresql-client-9.4
+}
+#----------------------------------------------------------------------------------------------------------------------
+install_deps ()
 {
   apt-get update
-  apt-get -y upgrade
   apt-get -y install build-essential \
                      zlib1g \
                      zlib1g-dev \
@@ -33,7 +43,7 @@ install_deps ()
                      locate \
                      libreadline6-dev \
                      libcurl4-openssl-dev \
-                     git-core \
+                     git \
                      libssl-dev \
                      libyaml-dev \
                      openssl \
@@ -43,14 +53,10 @@ install_deps ()
                      bison \
                      curl \
                      wget \
-                     postgresql-9.4 \
-                     postgresql-contrib-9.4 \
-                     libpq-dev \
                      libapr1 \
                      libaprutil1 \
                      libsvn1 \
                      libpcap-dev \
-                     postgresql-client-9.4 \
                      htop \
                      unzip \
                      lsof \
@@ -63,16 +69,19 @@ install_deps ()
                      libgdbm-dev \
                      libffi-dev \
                      tree \
+                     libjemalloc1 \
+                     libjemalloc-dev \
                      nmap
 }
 #----------------------------------------------------------------------------------------------------------------------
 ubuntu_rvm ()
 {
+  gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
   curl -L https://get.rvm.io | sudo bash -s stable
   source /etc/profile.d/rvm.sh
   sudo usermod -a -G rvm $(whoami)
   rvm autolibs enable
-  rvm install $SYSTEM_RUBY_VERSION
+  rvm install $SYSTEM_RUBY_VERSION -- --with-jemalloc
   rvm use $SYSTEM_RUBY_VERSION@$SYSTEM_RUBY_GEMSET --default --create
   ubuntu_log_info "Finished installing RVM!"
 }
@@ -90,12 +99,12 @@ ubuntu_ps1 ()
   echo "" >> ~/.bashrc
   echo "source /etc/profile.d/Z1_PS1.sh" >> ~/.bashrc
   echo "" >> /etc/skel/.bashrc
-  echo "source /etc/profile.d/Z1_PS1.sh" >> /etc/skel/.bashrc 
+  echo "source /etc/profile.d/Z1_PS1.sh" >> /etc/skel/.bashrc
   source /etc/profile.d/Z1_PS1.sh
   ubuntu_log_info "Finished setting up global PS1 variable!"
 }
 #----------------------------------------------------------------------------------------------------------------------
-setup_postgres () 
+setup_postgres ()
 {
   service postgresql start
   sudo -u postgres psql -c "CREATE USER msfuser WITH PASSWORD '$1';"
@@ -106,18 +115,11 @@ setup_postgres ()
   sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE metasploit_framework_test to msftest;"
 }
 #----------------------------------------------------------------------------------------------------------------------
-setup_msf () 
+setup_msf ()
 {
   cd $3
   bundle install
-  # Metasploit Updated to 2.1.5
-  # for MSF in $(ls msf*); do
-  #   echo "#!/usr/bin/env bash" > /usr/local/sbin/$MSF
-  #   echo "rvm in $3 do $3/$MSF" >> /usr/local/sbin/$MSF
-  #   chmod +x /usr/local/sbin/$MSF
-  # done
   cp $3/config/database.yml.example $3/config/database.yml
-  
   sed -i 's/username: \metasploit_framework_development/username: msfuser/g' $3/config/database.yml
   sed -i 's/username: \metasploit_framework_test/username: msftest/g' $3/config/database.yml
   sed -i "s/__________________________________/$1/g" $3/config/database.yml
@@ -126,7 +128,7 @@ setup_msf ()
   source ~/.bash_profile
 }
 #----------------------------------------------------------------------------------------------------------------------
-supbrah () 
+supbrah ()
 {
   echo " __  __ ____  _____ "
   echo "|  \/  / ___||  ___|"
@@ -135,7 +137,6 @@ supbrah ()
   echo "|_|  |_|____/|_|    "
   echo "Happy MSF nonsense  "
   echo "[*] MSF Location: $1"
-  echo "[*] msf* executables already pathed into /usr/local/sbin"
   echo "[*] "
   echo "[!] NOTE: You will need to logout and log back in to finalize changes!!!"
   echo "[*] "
@@ -143,14 +144,14 @@ supbrah ()
 }
 #----------------------------------------------------------------------------------------------------------------------
 install_deps
+install_pg
 ubuntu_rvm
 ubuntu_nano
 ubuntu_ps1
 source /etc/profile.d/rvm.sh
 setup_postgres $MSF_PASSWORD $MSF_PASSWORDTESTUSER
 git clone https://github.com/rapid7/metasploit-framework $MSF_PATH
-sed -i 's/2.1.5/2.2.0/' $MSF_PATH/.ruby-version
-# rvm install $(cat $MSF_PATH/.ruby-version)
+echo '2.2.0' > $MSF_PATH/.ruby-version
 setup_msf $MSF_PASSWORD $MSF_PASSWORDTESTUSER $MSF_PATH
 supbrah $MSF_PATH
 #----------------------------------------------------------------------------------------------------------------------
