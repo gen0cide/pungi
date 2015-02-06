@@ -43,7 +43,6 @@ install_deps ()
                      locate \
                      libreadline6-dev \
                      libcurl4-openssl-dev \
-                     git \
                      libssl-dev \
                      libyaml-dev \
                      openssl \
@@ -56,7 +55,8 @@ install_deps ()
                      libapr1 \
                      libaprutil1 \
                      libsvn1 \
-                     libpcap-dev \
+                     libnet1 \
+                     libnet1-dev \
                      htop \
                      unzip \
                      lsof \
@@ -71,6 +71,8 @@ install_deps ()
                      tree \
                      libpq-dev \
                      libpq5 \
+                     libpcap0.8 \
+                     libpcap0.8-dev \
                      libjemalloc1 \
                      libjemalloc-dev \
                      nmap
