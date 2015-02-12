@@ -10,6 +10,13 @@ rvm autolibs enable
 rvm install $PUNGI_RUBY_VERSION --movable -- --with-jemalloc
 rvm use $PUNGI_RUBY_VERSION@$PUNGI_DEFAULT_GEMSET --default --create
 # ------------------------------------------------------------------------------------------------------------
+curl -sL https://raw.github.com/gen0cide-/pungi/master/linux/ubuntu_ps1_profile.sh | sudo tee /etc/profile.d/Z1_PS1.sh > /dev/null
+chmod +x /etc/profile.d/Z1_PS1.sh
+echo "" >> ~/.bashrc
+echo "source /etc/profile.d/Z1_PS1.sh" >> ~/.bashrc
+echo "" >> /etc/skel/.bashrc
+echo "source /etc/profile.d/Z1_PS1.sh" >> /etc/skel/.bashrc
+# ------------------------------------------------------------------------------------------------------------
 curl -sL https://raw.github.com/gen0cide-/pungi/master/nanorc | sudo tee /etc/nanorc > /dev/null
 # ------------------------------------------------------------------------------------------------------------
 echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main 9.4" > /etc/apt/sources.list.d/pgdg.list
