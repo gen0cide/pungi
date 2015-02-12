@@ -7,8 +7,8 @@ curl -L https://get.rvm.io | sudo bash -s stable
 source /etc/profile.d/rvm.sh
 sudo usermod -a -G rvm $(whoami)
 rvm autolibs enable
-rvm install $PUNGI_RUBY_VERSION --movable -- --with-jemalloc
-rvm use $PUNGI_RUBY_VERSION@$PUNGI_DEFAULT_GEMSET --default --create
+# rvm install $PUNGI_RUBY_VERSION --movable -- --with-jemalloc
+# rvm use $PUNGI_RUBY_VERSION@$PUNGI_DEFAULT_GEMSET --default --create
 # ------------------------------------------------------------------------------------------------------------
 curl -sL https://raw.github.com/gen0cide-/pungi/master/linux/ubuntu_ps1_profile.sh | sudo tee /etc/profile.d/Z1_PS1.sh > /dev/null
 chmod +x /etc/profile.d/Z1_PS1.sh
