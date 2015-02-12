@@ -12,8 +12,8 @@ rvm use $PUNGI_RUBY_VERSION@$PUNGI_DEFAULT_GEMSET --default --create
 # ------------------------------------------------------------------------------------------------------------
 curl -sL https://raw.github.com/gen0cide-/pungi/master/linux/ubuntu_ps1_profile.sh | sudo tee /etc/profile.d/Z1_PS1.sh > /dev/null
 chmod +x /etc/profile.d/Z1_PS1.sh
-echo "" >> ~/.bashrc
-echo "source /etc/profile.d/Z1_PS1.sh" >> ~/.bashrc
+echo "" >> /root/.bashrc
+echo "source /etc/profile.d/Z1_PS1.sh" >> /root/.bashrc
 echo "" >> /etc/skel/.bashrc
 echo "source /etc/profile.d/Z1_PS1.sh" >> /etc/skel/.bashrc
 # ------------------------------------------------------------------------------------------------------------
