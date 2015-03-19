@@ -3,7 +3,7 @@
 MSF_PASSWORD=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-32})
 MSF_PASSWORDTESTUSER=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-32})
 SYSTEM_RUBY_VERSION="ruby-2.2.0"
-SYSTEM_RUBY_GEMSET="global"
+SYSTEM_RUBY_GEMSET="metasploit-framework"
 MSF_PATH="/opt/metasploit"
 #----------------------------------------------------------------------------------------------------------------------
 ubuntu_log_info ()
@@ -129,6 +129,19 @@ setup_msf ()
   source ~/.bash_profile
 }
 #----------------------------------------------------------------------------------------------------------------------
+setup_screen ()
+{
+  echo 'shell -$SHELL' > ~/.screenrc
+}
+#----------------------------------------------------------------------------------------------------------------------
+setup_handler ()
+{
+  curl -o /root/msf.rc http://alexlevinson.com/handler.txt
+  tmux new -s msf -d
+  tmux send -t msf "cd /opt/metasploit" ENTER
+  tmux send -t msf "ruby -W0 msfconsole -q -r /root/msf.rc" ENTER
+}
+#----------------------------------------------------------------------------------------------------------------------
 supbrah ()
 {
   echo " __  __ ____  _____ "
@@ -154,5 +167,7 @@ setup_postgres $MSF_PASSWORD $MSF_PASSWORDTESTUSER
 git clone https://github.com/rapid7/metasploit-framework $MSF_PATH
 echo '2.2.0' > $MSF_PATH/.ruby-version
 setup_msf $MSF_PASSWORD $MSF_PASSWORDTESTUSER $MSF_PATH
+setup_screen
+setup_handler
 supbrah $MSF_PATH
 #----------------------------------------------------------------------------------------------------------------------
