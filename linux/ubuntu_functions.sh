@@ -62,8 +62,6 @@ ubuntu_rvm ()
   source /etc/profile.d/rvm.sh
   source /etc/profile
   rvmsudo rvm autolibs enable
-  rvmsudo rvm install $PUNGI_RUBY_VERSION
-  rvmsudo rvm use $PUNGI_RUBY_VERSION@$PUNGI_DEFAULT_GEMSET --default --create
   ubuntu_log_info "Finished installing RVM!"
 }
 # -----------------------------------------------------------------------------
@@ -92,3 +90,6 @@ ubuntu_ps1
 # -----------------------------------------------------------------------------
 ubuntu_log_info "IMPORTANT! You must source /etc/profile for this to function successfully!"
 # -----------------------------------------------------------------------------
+source /etc/profile
+rvm install $PUNGI_RUBY_VERSION
+rvm use $PUNGI_RUBY_VERSION@$PUNGI_DEFAULT_GEMSET --default --create
