@@ -49,7 +49,8 @@ ubuntu_packages ()
                           postgresql-client  \
                           libpq5             \
                           libpq-dev          \
-                          lsof               
+                          lsof               \
+                          libjemalloc-dev
   ubuntu_log_info "Finished installing Ubuntu packages!"
 }
 # -----------------------------------------------------------------------------
@@ -57,11 +58,12 @@ ubuntu_rvm ()
 {
   gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
   curl -L https://get.rvm.io | sudo bash
-  source /etc/profile.d/rvm.sh
   sudo usermod -a -G rvm $(whoami)
-  rvm autolibs enable
-  rvm install $PUNGI_RUBY_VERSION -- --with-jemalloc
-  rvm use $PUNGI_RUBY_VERSION@$PUNGI_DEFAULT_GEMSET --default --create
+  source /etc/profile.d/rvm.sh
+  source /etc/profile
+  rvmsudo rvm autolibs enable
+  rvmsudo rvm install $PUNGI_RUBY_VERSION -- --with-jemalloc
+  rvmsudo rvm use $PUNGI_RUBY_VERSION@$PUNGI_DEFAULT_GEMSET --default --create
   ubuntu_log_info "Finished installing RVM!"
 }
 # -----------------------------------------------------------------------------
