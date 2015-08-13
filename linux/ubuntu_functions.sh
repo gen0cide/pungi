@@ -62,7 +62,7 @@ ubuntu_rvm ()
   source /etc/profile.d/rvm.sh
   source /etc/profile
   rvmsudo rvm autolibs enable
-  rvmsudo rvm install $PUNGI_RUBY_VERSION -- --with-jemalloc
+  rvmsudo rvm install $PUNGI_RUBY_VERSION
   rvmsudo rvm use $PUNGI_RUBY_VERSION@$PUNGI_DEFAULT_GEMSET --default --create
   ubuntu_log_info "Finished installing RVM!"
 }
@@ -79,7 +79,7 @@ ubuntu_ps1 ()
   sudo chmod +x /etc/profile.d/Z1_PS1.sh
   echo "" >> ~/.bashrc
   echo "source /etc/profile.d/Z1_PS1.sh" >> ~/.bashrc
-  echo "" >> /etc/skel/.bashrc
+  echo "" | sudo tee /etc/skel/.bashrc > /dev/null
   echo "source /etc/profile.d/Z1_PS1.sh" | sudo tee /etc/skel/.bashrc > /dev/null
   source /etc/profile.d/Z1_PS1.sh
   ubuntu_log_info "Finished setting up global PS1 variable!"
