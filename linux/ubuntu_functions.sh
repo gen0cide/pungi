@@ -1,4 +1,4 @@
-PUNGI_RUBY_VERSION="2.2.1"
+PUNGI_RUBY_VERSION="2.2.2"
 PUNGI_DEFAULT_GEMSET="base"
 # -----------------------------------------------------------------------------
 ubuntu_log_info ()
@@ -56,11 +56,11 @@ ubuntu_packages ()
 ubuntu_rvm ()
 {
   gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-  curl -L https://get.rvm.io | sudo bash -s stable
+  curl -L https://get.rvm.io | sudo bash
   source /etc/profile.d/rvm.sh
   sudo usermod -a -G rvm $(whoami)
   rvm autolibs enable
-  rvm install $PUNGI_RUBY_VERSION
+  rvm install $PUNGI_RUBY_VERSION -- --with-jemalloc
   rvm use $PUNGI_RUBY_VERSION@$PUNGI_DEFAULT_GEMSET --default --create
   ubuntu_log_info "Finished installing RVM!"
 }
@@ -74,11 +74,11 @@ ubuntu_nano ()
 ubuntu_ps1 ()
 {
   curl -sL https://raw.github.com/gen0cide-/pungi/master/linux/ubuntu_ps1_profile.sh | sudo tee /etc/profile.d/Z1_PS1.sh > /dev/null
-  chmod +x /etc/profile.d/Z1_PS1.sh
+  sudo chmod +x /etc/profile.d/Z1_PS1.sh
   echo "" >> ~/.bashrc
   echo "source /etc/profile.d/Z1_PS1.sh" >> ~/.bashrc
   echo "" >> /etc/skel/.bashrc
-  echo "source /etc/profile.d/Z1_PS1.sh" >> /etc/skel/.bashrc 
+  echo "source /etc/profile.d/Z1_PS1.sh" | sudo tee /etc/skel/.bashrc > /dev/null
   source /etc/profile.d/Z1_PS1.sh
   ubuntu_log_info "Finished setting up global PS1 variable!"
 }
