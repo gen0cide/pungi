@@ -2,7 +2,7 @@
 #----------------------------------------------------------------------------------------------------------------------
 MSF_PASSWORD=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-32})
 MSF_PASSWORDTESTUSER=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-32})
-SYSTEM_RUBY_VERSION="ruby-2.2.0"
+SYSTEM_RUBY_VERSION="ruby-2.2.3"
 SYSTEM_RUBY_GEMSET="metasploit-framework"
 MSF_PATH="/opt/metasploit"
 #----------------------------------------------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ install_pg ()
   wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
   apt-get update
   echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
-  apt-get -y install postgresql-9.3 postgresql-client-9.3 postgresql-contrib-9.3
+  apt-get -y install postgresql-9.4 postgresql-client-9.4 postgresql-contrib-9.4
 }
 #----------------------------------------------------------------------------------------------------------------------
 install_deps ()
@@ -165,7 +165,7 @@ ubuntu_ps1
 source /etc/profile.d/rvm.sh
 setup_postgres $MSF_PASSWORD $MSF_PASSWORDTESTUSER
 git clone https://github.com/rapid7/metasploit-framework $MSF_PATH
-echo '2.2.0' > $MSF_PATH/.ruby-version
+echo '2.2.3' > $MSF_PATH/.ruby-version
 setup_msf $MSF_PASSWORD $MSF_PASSWORDTESTUSER $MSF_PATH
 setup_screen
 setup_handler
