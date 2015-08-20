@@ -22,9 +22,9 @@ ubuntu_log_info ()
 install_pg ()
 {
   wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-  apt-get update
   echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
-  apt-get -y install postgresql-9.3 postgresql-client-9.3 postgresql-contrib-9.3
+  sudo apt-get update
+  sudo apt-get -y install postgresql-9.4 postgresql-client-9.4 postgresql-contrib-9.4
 }
 #----------------------------------------------------------------------------------------------------------------------
 install_deps ()
