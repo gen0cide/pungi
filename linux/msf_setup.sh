@@ -23,13 +23,13 @@ install_pg ()
 {
   wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
   echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
-  sudo apt-get update
+  sudo apt-get -y update
   sudo apt-get -y install postgresql-9.4 postgresql-client-9.4 postgresql-contrib-9.4
 }
 #----------------------------------------------------------------------------------------------------------------------
 install_deps ()
 {
-  apt-get update
+  apt-get -y update
   apt-get -y install build-essential \
                      zlib1g \
                      zlib1g-dev \
@@ -98,8 +98,8 @@ ubuntu_ps1 ()
 {
   curl -sL https://raw.github.com/gen0cide-/pungi/master/linux/ubuntu_ps1_profile.sh | sudo tee /etc/profile.d/Z1_PS1.sh > /dev/null
   chmod +x /etc/profile.d/Z1_PS1.sh
-  echo "" >> ~/.bashrc
-  echo "source /etc/profile.d/Z1_PS1.sh" >> ~/.bashrc
+  echo "" >> /root/.bashrc
+  echo "source /etc/profile.d/Z1_PS1.sh" >> /root/.bashrc
   echo "" >> /etc/skel/.bashrc
   echo "source /etc/profile.d/Z1_PS1.sh" >> /etc/skel/.bashrc
   source /etc/profile.d/Z1_PS1.sh
@@ -127,13 +127,13 @@ setup_msf ()
   sed -i 's/username: \metasploit_framework_test/username: msftest/g' $3/config/database.yml
   sed -i "s/__________________________________/$1/g" $3/config/database.yml
   sed -i "s/___________________________/$2/g" $3/config/database.yml
-  echo "export MSF_DATABASE_CONFIG=$3/config/database.yml" >> ~/.bash_profile
-  source ~/.bash_profile
+  echo "export MSF_DATABASE_CONFIG=$3/config/database.yml" >> /root/.bash_profile
+  source /root/.bash_profile
 }
 #----------------------------------------------------------------------------------------------------------------------
 setup_screen ()
 {
-  echo 'shell -$SHELL' > ~/.screenrc
+  echo 'shell -$SHELL' > /root/.screenrc
 }
 #----------------------------------------------------------------------------------------------------------------------
 setup_handler ()
