@@ -7,11 +7,11 @@ fi
 sysctl vm.overcommit_memory=1
 # -----------------------------------------------------------------------------
 apt-get install -y python-software-properties libmagic-dev tree
-echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main 9.4" > /etc/apt/sources.list.d/pgdg.list
+echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 add-apt-repository -y ppa:chris-lea/redis-server
 add-apt-repository -y ppa:nginx/stable
 add-apt-repository -y ppa:chris-lea/node.js 
 apt-get update
-apt-get install -y postgresql-client-9.4 postgresql-9.4 postgresql-contrib-9.4 uuid redis-server nginx nodejs
+apt-get install -y postgresql-client-9.5 postgresql-9.5 postgresql-contrib-9.5 uuid redis-server nginx nodejs
 # -----------------------------------------------------------------------------
