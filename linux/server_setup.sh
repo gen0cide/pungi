@@ -11,7 +11,7 @@ echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main"
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 add-apt-repository -y ppa:chris-lea/redis-server
 add-apt-repository -y ppa:nginx/stable
-add-apt-repository -y ppa:chris-lea/node.js 
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 apt-get update
 apt-get install -y postgresql-client-9.5 postgresql-9.5 postgresql-contrib-9.5 uuid redis-server nginx nodejs
 # -----------------------------------------------------------------------------
