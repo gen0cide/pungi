@@ -27,3 +27,4 @@ LCYAN="\[\033[01;36m\]"
 WHITE="\[\033[01;37m\]"
 # ------------------------------------------------------------------------------
 PS1="$LRED\t $LYELLOW\h$NO_COLOUR/$GREEN\u $WHITE@\W$NO_COLOUR <$LCYAN\$(rvm-prompt v g)$NO_COLOUR>$YELLOW\$(parse_git_branch)$NO_COLOUR \\$ "
+# ------------------------------------------------------------------------------
