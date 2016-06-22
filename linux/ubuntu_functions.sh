@@ -3,14 +3,23 @@ PUNGI_DEFAULT_GEMSET="base"
 # -----------------------------------------------------------------------------
 ubuntu_log_info ()
 {
-  RED="\033[0;31m"
-  YELLOW="\033[0;33m"
-  GREEN="\033[0;32m"
-  GRAY="\033[1;30m"
-  LIGHT_GRAY="\033[0;37m"
-  CYAN="\033[0;36m"
-  LIGHT_CYAN="\033[1;36m"
-  NO_COLOUR="\033[0m"
+  NO_COLOUR="\[\033[0m\]"
+  RED="\[\033[00;31m\]"
+  GREEN="\[\033[00;32m\]"
+  YELLOW="\[\033[00;33m\]"
+  BLUE="\[\033[00;34m\]"
+  MAGENTA="\[\033[00;35m\]"
+  PURPLE="\[\033[00;35m\]"
+  CYAN="\[\033[00;36m\]"
+  LIGHTGRAY="\[\033[00;37m\]"
+  LRED="\[\033[01;31m\]"
+  LGREEN="\[\033[01;32m\]"
+  LYELLOW="\[\033[01;33m\]"
+  LBLUE="\[\033[01;34m\]"
+  LMAGENTA="\[\033[01;35m\]"
+  LPURPLE="\[\033[01;35m\]"
+  LCYAN="\[\033[01;36m\]"
+  WHITE="\[\033[01;37m\]"
   echo -e "$RED[*] $YELLOW$1$NO_COLOUR"
 }
 # -----------------------------------------------------------------------------
@@ -71,6 +80,29 @@ ubuntu_nano ()
   ubuntu_log_info "Finished installing nano config!"
 }
 # -----------------------------------------------------------------------------
+ubuntu_gvm ()
+{
+  ubuntu_log_info "Installing GVM and Golang runtimes"
+  curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer | sudo bash
+  source /root/.gvm/scripts/gvm
+  gvm install go1.4
+  gvm use go1.4
+  gvm install go1.6.2
+  gvm use go1.6.2 --default
+  ubuntu_log_info "Finished Golang deployment"
+}
+# -----------------------------------------------------------------------------
+ubuntu_nvm ()
+{
+  ubuntu_log_info "Installing NVM and NodeJS runtimes"
+  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.1/install.sh | bash
+  source /root/.nvm/nvm.sh
+  nvm install 6.2
+  nvm use 6.2
+  nvm alias default 6.2
+  ubuntu_log_info "Finished NodeJS deployment"
+}
+# -----------------------------------------------------------------------------
 ubuntu_ps1 ()
 {
   curl -sL https://raw.github.com/gen0cide-/pungi/master/linux/ubuntu_ps1_profile.sh | sudo tee /etc/profile.d/Z1_PS1.sh > /dev/null
@@ -86,10 +118,14 @@ ubuntu_ps1 ()
 ubuntu_packages
 ubuntu_rvm
 ubuntu_nano
+ubuntu_gvm
+ubuntu_nvm
 ubuntu_ps1
 # -----------------------------------------------------------------------------
 ubuntu_log_info "IMPORTANT! You must source /etc/profile for this to function successfully!"
 # -----------------------------------------------------------------------------
 source /etc/profile
-rvm install $PUNGI_RUBY_VERSION
+rvm install $PUNGI_RUBY_VERSION -C --with-jemalloc
 rvm use $PUNGI_RUBY_VERSION@$PUNGI_DEFAULT_GEMSET --default --create
+touch .hushlogin
+# -----------------------------------------------------------------------------
