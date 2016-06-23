@@ -1,65 +1,65 @@
+# -----------------------------------------------------------------------------
 PUNGI_RUBY_VERSION="2.3.1"
+PUNGI_NODE_VERSION="6.2"
+PUNGI_GO_VERSION="go1.6.2" 
 PUNGI_DEFAULT_GEMSET="base"
 # -----------------------------------------------------------------------------
 ubuntu_log_info ()
 {
-  NO_COLOUR="\[\033[0m\]"
-  RED="\[\033[00;31m\]"
-  GREEN="\[\033[00;32m\]"
-  YELLOW="\[\033[00;33m\]"
-  BLUE="\[\033[00;34m\]"
-  MAGENTA="\[\033[00;35m\]"
-  PURPLE="\[\033[00;35m\]"
-  CYAN="\[\033[00;36m\]"
-  LIGHTGRAY="\[\033[00;37m\]"
-  LRED="\[\033[01;31m\]"
-  LGREEN="\[\033[01;32m\]"
-  LYELLOW="\[\033[01;33m\]"
-  LBLUE="\[\033[01;34m\]"
-  LMAGENTA="\[\033[01;35m\]"
-  LPURPLE="\[\033[01;35m\]"
-  LCYAN="\[\033[01;36m\]"
-  WHITE="\[\033[01;37m\]"
-  echo -e "$RED[*] $YELLOW$1$NO_COLOUR"
+  echo ""
+  echo "######################################################################"
+  echo "#"
+  echo "# <$(date)> $1"
+  echo "#"
+  echo "######################################################################"
+  echo ""
 }
 # -----------------------------------------------------------------------------
 ubuntu_packages ()
 {
-  sudo apt-get -y update
-  sudo apt-get -y upgrade
-  sudo apt-get -y install build-essential    \
-                          openssl            \
-                          libreadline6       \
-                          libreadline6-dev   \
-                          libncurses-dev     \
-                          libffi-dev         \
-                          libgdbm-dev        \
-                          zlib1g             \
-                          zlib1g-dev         \
-                          libssl-dev         \
-                          libyaml-dev        \
-                          libsqlite3-0       \
-                          libsqlite3-dev     \
-                          sqlite3            \
-                          libxml2-dev        \
-                          libxslt1-dev       \
-                          autoconf           \
-                          libc6-dev          \
-                          automake           \
-                          libtool            \
-                          git-core           \
-                          curl               \
-                          libmysqlclient-dev \
-                          unzip              \
-                          zip                \
-                          htop               \
-                          finger             \
-                          multitail          \
-                          postgresql-client  \
-                          libpq5             \
-                          libpq-dev          \
-                          lsof               \
-                          libjemalloc-dev
+  sudo apt -y update
+  sudo apt -y upgrade
+  sudo apt -y install build-essential    \
+                      openssl            \
+                      libreadline6       \
+                      libreadline6-dev   \
+                      libncurses-dev     \
+                      libffi-dev         \
+                      libgdbm-dev        \
+                      zlib1g             \
+                      zlib1g-dev         \
+                      libssl-dev         \
+                      libyaml-dev        \
+                      libsqlite3-0       \
+                      libsqlite3-dev     \
+                      sqlite3            \
+                      libxml2-dev        \
+                      libxslt1-dev       \
+                      autoconf           \
+                      libc6-dev          \
+                      automake           \
+                      libtool            \
+                      git-core           \
+                      curl               \
+                      libmysqlclient-dev \
+                      unzip              \
+                      zip                \
+                      htop               \
+                      finger             \
+                      multitail          \
+                      postgresql-client  \
+                      libpq5             \
+                      libpq-dev          \
+                      lsof               \
+                      libjemalloc-dev    \
+                      libgmp-dev         \
+                      graphviz           \
+                      traceroute         \
+                      dnsutils           \
+                      libmagic-dev       \
+                      upstart            \
+                      bison              \
+                      python-software-properties
   ubuntu_log_info "Finished installing Ubuntu packages!"
 }
 # -----------------------------------------------------------------------------
@@ -83,23 +83,30 @@ ubuntu_nano ()
 ubuntu_gvm ()
 {
   ubuntu_log_info "Installing GVM and Golang runtimes"
-  curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer | sudo bash
+  curl -o gvm_setup.sh -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer
+  bash gvm_setup.sh
+  echo ""
   source /root/.gvm/scripts/gvm
   gvm install go1.4
   gvm use go1.4
-  gvm install go1.6.2
-  gvm use go1.6.2 --default
+  gvm install $PUNGI_GO_VERSION
+  gvm use $PUNGI_GO_VERSION --default
+  rm gvm_setup.sh
   ubuntu_log_info "Finished Golang deployment"
+
+  # export PUNGI_GO_VERSION="go1.6.2" && gvm install go1.4 && gvm use go1.4 && gvm install $PUNGI_GO_VERSION && gvm use $PUNGI_GO_VERSION --default
 }
 # -----------------------------------------------------------------------------
 ubuntu_nvm ()
 {
   ubuntu_log_info "Installing NVM and NodeJS runtimes"
-  curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.1/install.sh | bash
+  curl -o nvm_setup.sh 'https://raw.githubusercontent.com/creationix/nvm/v0.31.1/install.sh'
+  bash nvm_setup.sh
   source /root/.nvm/nvm.sh
-  nvm install 6.2
-  nvm use 6.2
-  nvm alias default 6.2
+  nvm install $PUNGI_NODE_VERSION
+  nvm use $PUNGI_NODE_VERSION
+  nvm alias default $PUNGI_NODE_VERSION
+  rm nvm_setup.sh
   ubuntu_log_info "Finished NodeJS deployment"
 }
 # -----------------------------------------------------------------------------
@@ -118,8 +125,6 @@ ubuntu_ps1 ()
 ubuntu_packages
 ubuntu_rvm
 ubuntu_nano
-ubuntu_gvm
-ubuntu_nvm
 ubuntu_ps1
 # -----------------------------------------------------------------------------
 ubuntu_log_info "IMPORTANT! You must source /etc/profile for this to function successfully!"
@@ -127,5 +132,8 @@ ubuntu_log_info "IMPORTANT! You must source /etc/profile for this to function su
 source /etc/profile
 rvm install $PUNGI_RUBY_VERSION -C --with-jemalloc
 rvm use $PUNGI_RUBY_VERSION@$PUNGI_DEFAULT_GEMSET --default --create
-touch .hushlogin
+touch /root/.hushlogin
+# -----------------------------------------------------------------------------
+ubuntu_nvm
+ubuntu_gvm
 # -----------------------------------------------------------------------------
