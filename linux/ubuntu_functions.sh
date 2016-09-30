@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 PUNGI_RUBY_VERSION="2.3.1"
 PUNGI_NODE_VERSION="6.2"
-PUNGI_GO_VERSION="go1.6.2" 
+PUNGI_GO_VERSION="go1.7" 
 PUNGI_DEFAULT_GEMSET="base"
 # -----------------------------------------------------------------------------
 ubuntu_log_info ()
@@ -87,7 +87,7 @@ ubuntu_gvm ()
   bash gvm_setup.sh
   echo ""
   source /root/.gvm/scripts/gvm
-  gvm install go1.4
+  CGO_ENABLED=0 gvm install go1.4
   gvm use go1.4
   gvm install $PUNGI_GO_VERSION
   gvm use $PUNGI_GO_VERSION --default
