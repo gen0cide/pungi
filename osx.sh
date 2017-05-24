@@ -223,7 +223,7 @@ bit-slicer
 google-chrome
 little-snitch
 keka
-shimo
+viscosity
 iterm2
 1password
 amazon-workspaces
