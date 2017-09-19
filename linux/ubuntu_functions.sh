@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
-PUNGI_RUBY_VERSION="2.4.0"
-PUNGI_NODE_VERSION="7.4"
-PUNGI_GO_VERSION="go1.8"
+PUNGI_RUBY_VERSION="2.4.1"
+PUNGI_NODE_VERSION="8.5"
+PUNGI_GO_VERSION="go1.9"
 PUNGI_DEFAULT_GEMSET="base"
 # -----------------------------------------------------------------------------
 ubuntu_log_info ()
@@ -93,8 +93,6 @@ ubuntu_gvm ()
   gvm use $PUNGI_GO_VERSION --default
   rm gvm_setup.sh
   ubuntu_log_info "Finished Golang deployment"
-
-  # export PUNGI_GO_VERSION="go1.6.2" && gvm install go1.4 && gvm use go1.4 && gvm install $PUNGI_GO_VERSION && gvm use $PUNGI_GO_VERSION --default
 }
 # -----------------------------------------------------------------------------
 ubuntu_nvm ()
