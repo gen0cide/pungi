@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
-PUNGI_RUBY_VERSION="2.5.1"
-PUNGI_NODE_VERSION="10.0"
-PUNGI_GO_VERSION="go1.10"
+PUNGI_RUBY_VERSION="2.5.3"
+PUNGI_NODE_VERSION="11.2"
+PUNGI_GO_VERSION="go1.11"
 PUNGI_DEFAULT_GEMSET="base"
 # -----------------------------------------------------------------------------
 ubuntu_log_info ()
