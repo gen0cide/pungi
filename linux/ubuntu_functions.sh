@@ -17,49 +17,45 @@ ubuntu_log_info ()
 # -----------------------------------------------------------------------------
 ubuntu_packages ()
 {
-  sudo apt -y update
-  sudo apt -y upgrade
-  sudo apt -y install build-essential    \
-                      openssl            \
-                      libreadline6       \
-                      libreadline6-dev   \
-                      libncurses-dev     \
-                      libffi-dev         \
-                      libgdbm-dev        \
-                      zlib1g             \
-                      zlib1g-dev         \
-                      libssl-dev         \
-                      libyaml-dev        \
-                      libsqlite3-0       \
-                      libsqlite3-dev     \
-                      sqlite3            \
-                      libxml2-dev        \
-                      libxslt1-dev       \
-                      autoconf           \
-                      libc6-dev          \
-                      automake           \
-                      libtool            \
-                      git-core           \
-                      curl               \
-                      libmysqlclient-dev \
-                      unzip              \
-                      zip                \
-                      htop               \
-                      finger             \
-                      multitail          \
-                      postgresql-client  \
-                      libpq5             \
-                      libpq-dev          \
-                      lsof               \
-                      libjemalloc-dev    \
-                      libgmp-dev         \
-                      graphviz           \
-                      traceroute         \
-                      dnsutils           \
-                      libmagic-dev       \
-                      upstart            \
-                      bison              \
-                      python-software-properties
+  sudo apt-get -y update
+  sudo apt-get -y upgrade
+  sudo apt-get -y install build-essential    \
+                          openssl            \
+                          libncurses-dev     \
+                          libffi-dev         \
+                          libgdbm-dev        \
+                          zlib1g             \
+                          zlib1g-dev         \
+                          libssl-dev         \
+                          libyaml-dev        \
+                          libsqlite3-0       \
+                          libsqlite3-dev     \
+                          sqlite3            \
+                          libxml2-dev        \
+                          libxslt1-dev       \
+                          autoconf           \
+                          libc6-dev          \
+                          automake           \
+                          libtool            \
+                          git-core           \
+                          curl               \
+                          libmysqlclient-dev \
+                          unzip              \
+                          zip                \
+                          htop               \
+                          finger             \
+                          multitail          \
+                          postgresql-client  \
+                          libpq5             \
+                          libpq-dev          \
+                          lsof               \
+                          libjemalloc-dev    \
+                          libgmp-dev         \
+                          graphviz           \
+                          traceroute         \
+                          dnsutils           \
+                          libmagic-dev       \
+                          bison              
   ubuntu_log_info "Finished installing Ubuntu packages!"
 }
 # -----------------------------------------------------------------------------
@@ -82,16 +78,14 @@ ubuntu_nano ()
 # -----------------------------------------------------------------------------
 ubuntu_gvm ()
 {
-  ubuntu_log_info "Installing GVM and Golang runtimes"
-  curl -o gvm_setup.sh -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer
-  bash gvm_setup.sh
-  echo ""
-  source /root/.gvm/scripts/gvm
-  CGO_ENABLED=0 gvm install go1.4
-  gvm use go1.4
-  gvm install $PUNGI_GO_VERSION
-  gvm use $PUNGI_GO_VERSION --default
-  rm gvm_setup.sh
+  curl -o /tmp/golang.tgz "https://storage.googleapis.com/golang/${PUNGI_GO_VERSION}.linux-amd64.tar.gz"
+  mkdir /opt/go
+  tar xzf /tmp/golang.tgz -C /usr/local
+  cat <<EOF >/etc/environment
+  GOPATH="/opt/go"
+  GOROOT="/usr/local/go"
+  PATH="/usr/local/go/bin:/opt/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+EOF
   ubuntu_log_info "Finished Golang deployment"
 }
 # -----------------------------------------------------------------------------
