@@ -50,7 +50,8 @@ ubuntu_packages ()
                           traceroute         \
                           dnsutils           \
                           libmagic-dev       \
-                          bison
+                          bison              \
+                          net-tools
   ubuntu_log_info "Finished installing Ubuntu packages!"
 }
 # -----------------------------------------------------------------------------
@@ -72,9 +73,21 @@ ubuntu_ps1 ()
   ubuntu_log_info "Finished setting up global PS1 variable!"
 }
 # -----------------------------------------------------------------------------
+ubuntu_grc ()
+{
+  apt -y install grc
+  echo "GRC_ALIASES=true" >> /etc/default/grc
+  echo "GRC_ALIASES=true" >> ~/.bashrc
+  echo '[[ -s "/etc/profile.d/grc.sh" ]] && source /etc/grc.sh' >> ~/.bashrc  
+  curl -o /etc/grc.sh https://raw.githubusercontent.com/garabik/grc/master/grc.sh
+  echo 'GRC_ALIASES=true' >> /etc/profile.d/grc.sh
+  chmod 755 /etc/profile.d/grc.sh  
+}
+# -----------------------------------------------------------------------------
 ubuntu_packages
 ubuntu_nano
 ubuntu_ps1
+ubuntu_grc
 # -----------------------------------------------------------------------------
 ubuntu_log_info "IMPORTANT! You must source /etc/profile for this to function successfully!"
 # -----------------------------------------------------------------------------
